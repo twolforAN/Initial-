@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Systems Intake</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0C0F1A;
+  --surface: #131726;
+  --surface-2: #1A1F30;
+  --border: #252C42;
+  --text: #DDE2F0;
+  --text-muted: #6B7491;
+  --accent: #5B7FFF;
+  --accent-dim: rgba(91, 127, 255, 0.12);
+  --critical: #FF5B5B;
+  --radius: 8px;
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+html { font-size: 16px; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.header {
+  border-bottom: 1px solid var(--border);
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.header-mark {
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 6px 10px;
+  border-radius: 4px;
+}
+.header-title {
+  font-size: 14px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+.header-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+}
+
+.main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+  text-wrap: balance;
+}
+.page-subtitle {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 40px;
+}
+
+.section { margin-bottom: 40px; }
+
+.section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.field { margin-bottom: 20px; }
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.field-row-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+label .required { color: var(--accent); margin-left: 3px; }
+
+input[type="text"],
+input[type="email"],
+textarea,
+select {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  padding: 10px 14px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(91, 127, 255, 0.15);
+}
+textarea {
+  resize: vertical;
+  min-height: 96px;
+  line-height: 1.6;
+}
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7491' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+select option { background: #1A1F30; }
+
+.radio-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.radio-card { position: relative; cursor: pointer; }
+.radio-card input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+.radio-card-inner {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  background: var(--surface);
+  transition: border-color 0.15s, background 0.15s;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.radio-card input[type="radio"]:checked + .radio-card-inner {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+.radio-card-inner:hover { border-color: #3d4a6e; }
+.radio-card-title { font-size: 13px; font-weight: 600; color: var(--text); }
+.radio-card-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+
+.submit-area {
+  padding-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.btn-submit {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 12px 32px;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.btn-submit:hover { opacity: 0.88; }
+.btn-submit:active { transform: scale(0.98); }
+.submit-note { font-size: 12px; color: var(--text-muted); }
+
+/* Score Modal */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 10, 18, 0.88);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  padding: 24px;
+}
+.overlay.visible { opacity: 1; pointer-events: all; }
+
+.score-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 540px;
+  padding: 40px;
+  transform: translateY(20px);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.overlay.visible .score-card { transform: translateY(0); }
+
+.score-header { text-align: center; margin-bottom: 32px; }
+.score-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.gauge-wrap {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 20px;
+  position: relative;
+}
+.gauge-wrap svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.gauge-track { fill: none; stroke: var(--surface-2); stroke-width: 10; }
+.gauge-fill {
+  fill: none;
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-dasharray: 408.41;
+  stroke-dashoffset: 408.41;
+  transition: stroke-dashoffset 1.4s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.3s;
+}
+.gauge-score {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.gauge-number {
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.gauge-max { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+.score-tier { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+.score-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  max-width: 340px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.breakdown {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.breakdown-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.breakdown-item {
+  display: grid;
+  grid-template-columns: 140px 1fr 40px;
+  align-items: center;
+  gap: 12px;
+}
+.breakdown-name { font-size: 12px; color: var(--text-muted); }
+.bar-track { height: 6px; background: var(--surface-2); border-radius: 3px; overflow: hidden; }
+.bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  width: 0%;
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.breakdown-pts {
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--text-muted);
+}
+
+.score-footer {
+  margin-top: 32px;
+  display: flex;
+  gap: 10px;
+}
+.btn-secondary {
+  flex: 1;
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 10px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.btn-secondary:hover { border-color: var(--accent); }
+.btn-primary-small {
+  flex: 1;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.btn-primary-small:hover { opacity: 0.88; }
+
+/* Validation */
+.field.error input,
+.field.error textarea,
+.field.error select { border-color: var(--critical); }
+.field.error .radio-grid { outline: 1px solid var(--critical); border-radius: var(--radius); }
+.error-msg {
+  font-size: 11px;
+  color: var(--critical);
+  margin-top: 5px;
+  display: none;
+}
+.field.error .error-msg { display: block; }
+
+@media (max-width: 600px) {
+  .main { padding: 32px 16px 60px; }
+  .header { padding: 16px 20px; }
+  .field-row, .field-row-3 { grid-template-columns: 1fr; }
+  .radio-grid { grid-template-columns: 1fr; }
+  .breakdown-item { grid-template-columns: 110px 1fr 36px; }
+  .score-card { padding: 28px 20px; }
+  .submit-area { flex-direction: column; align-items: flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gauge-fill, .bar-fill, .overlay, .score-card { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="header-mark">BSI</span>
+  <div class="header-divider"></div>
+  <span class="header-title">Business Systems Intake</span>
+</div>
+
+<main class="main">
+  <h1 class="page-title">Submit a Request</h1>
+  <p class="page-subtitle">Describe your need and we'll evaluate its business impact. Fields marked <span style="color:var(--accent)">*</span> are required.</p>
+
+  <form id="intakeForm" novalidate>
+
+    <div class="section">
+      <div class="section-label">Request Details</div>
+
+      <div class="field" id="f-title">
+        <label>Request Title <span class="required">*</span></label>
+        <input type="text" id="title" placeholder="e.g. Automate monthly billing reconciliation" />
+        <div class="error-msg">Please give your request a title.</div>
+      </div>
+
+      <div class="field-row">
+        <div class="field" id="f-type">
+          <label>Request Type <span class="required">*</span></label>
+          <select id="type">
+            <option value="">Select type…</option>
+            <option>New System</option>
+            <option>Enhancement to Existing System</option>
+            <option>Integration</option>
+            <option>Automation</option>
+            <option>Process Change</option>
+            <option>Reporting / Analytics</option>
+            <option>Other</option>
+          </select>
+          <div class="error-msg">Please select a request type.</div>
+        </div>
+        <div class="field" id="f-dept">
+          <label>Department <span class="required">*</span></label>
+          <select id="dept">
+            <option value="">Select department…</option>
+            <option>Sales</option>
+            <option>Marketing</option>
+            <option>Finance</option>
+            <option>Operations</option>
+            <option>Customer Success</option>
+            <option>IT / Engineering</option>
+            <option>HR / People Ops</option>
+            <option>Legal / Compliance</option>
+            <option>Executive</option>
+            <option>Other</option>
+          </select>
+          <div class="error-msg">Please select your department.</div>
+        </div>
+      </div>
+
+      <div class="field-row-3">
+        <div class="field" id="f-name">
+          <label>Your Name <span class="required">*</span></label>
+          <input type="text" id="name" placeholder="Full name" />
+          <div class="error-msg">Required.</div>
+        </div>
+        <div class="field" id="f-email">
+          <label>Email <span class="required">*</span></label>
+          <input type="email" id="email" placeholder="you@company.com" />
+          <div class="error-msg">Valid email required.</div>
+        </div>
+        <div class="field">
+          <label>Date Needed</label>
+          <input type="text" id="duedate" placeholder="e.g. Q3 2026 or ASAP" />
+        </div>
+      </div>
+
+      <div class="field" id="f-desc">
+        <label>Request Description <span class="required">*</span></label>
+        <textarea id="desc" placeholder="Describe what you need and what it should do…"></textarea>
+        <div class="error-msg">Please describe your request.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Business Case</div>
+
+      <div class="field" id="f-problem">
+        <label>Problem Being Solved <span class="required">*</span></label>
+        <textarea id="problem" placeholder="What breaks, slows down, or costs money without this?" style="min-height:80px;"></textarea>
+        <div class="error-msg">Please describe the problem.</div>
+      </div>
+
+      <div class="field" id="f-urgency">
+        <label>Urgency <span class="required">*</span></label>
+        <div class="radio-grid">
+          <label class="radio-card">
+            <input type="radio" name="urgency" value="30" />
+            <div class="radio-card-inner">
+              <div class="radio-card-title">Business Critical</div>
+              <div class="radio-card-desc">System down, compliance deadline, or active revenue loss</div>
+            </div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="urgency" value="20" />
+            <div class="radio-card-inner">
+              <div class="radio-card-title">High</div>
+              <div class="radio-card-desc">Significant productivity loss or risk if not addressed soon</div>
+            </div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="urgency" value="10" />
+            <div class="radio-card-inner">
+              <div class="radio-card-title">Medium</div>
+              <div class="radio-card-desc">Clear improvement opportunity, workable with current state</div>
+            </div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="urgency" value="5" />
+            <div class="radio-card-inner">
+              <div class="radio-card-title">Low</div>
+              <div class="radio-card-desc">Nice to have, no immediate pain without it</div>
+            </div>
+          </label>
+        </div>
+        <div class="error-msg" id="urgency-error">Please select an urgency level.</div>
+      </div>
+
+      <div class="field-row">
+        <div class="field" id="f-users">
+          <label>Users / Teams Affected <span class="required">*</span></label>
+          <select id="users">
+            <option value="">Select…</option>
+            <option value="25">Organization-wide (100+ people)</option>
+            <option value="18">Multiple departments (20–100)</option>
+            <option value="10">Single department (5–20)</option>
+            <option value="4">Small team (&lt;5)</option>
+          </select>
+          <div class="error-msg">Required.</div>
+        </div>
+        <div class="field" id="f-revenue">
+          <label>Revenue / Cost Impact <span class="required">*</span></label>
+          <select id="revenue">
+            <option value="">Select…</option>
+            <option value="20">Direct revenue or &gt;$100K savings</option>
+            <option value="12">Moderate savings ($10K–$100K)</option>
+            <option value="5">Minor savings (&lt;$10K)</option>
+            <option value="0">No direct financial impact</option>
+          </select>
+          <div class="error-msg">Required.</div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field" id="f-time">
+          <label>Weekly Time Savings (team total) <span class="required">*</span></label>
+          <select id="timesavings">
+            <option value="">Select…</option>
+            <option value="10">&gt;10 hours / week</option>
+            <option value="7">5–10 hours / week</option>
+            <option value="4">1–5 hours / week</option>
+            <option value="1">Under 1 hour / week</option>
+          </select>
+          <div class="error-msg">Required.</div>
+        </div>
+        <div class="field" id="f-compliance">
+          <label>Compliance / Regulatory Requirement <span class="required">*</span></label>
+          <select id="compliance">
+            <option value="">Select…</option>
+            <option value="15">Yes — required for compliance</option>
+            <option value="0">No</option>
+          </select>
+          <div class="error-msg">Required.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Additional Context</div>
+
+      <div class="field">
+        <label>Systems or Tools Involved</label>
+        <input type="text" id="systems" placeholder="e.g. Salesforce, NetSuite, Workday" />
+      </div>
+      <div class="field">
+        <label>Known Constraints or Dependencies</label>
+        <textarea id="constraints" placeholder="Budget limits, vendor contracts, pending projects, etc." style="min-height:72px;"></textarea>
+      </div>
+    </div>
+
+    <div class="submit-area">
+      <button type="submit" class="btn-submit">Calculate Impact Score →</button>
+      <span class="submit-note">Score is generated instantly upon submission.</span>
+    </div>
+
+  </form>
+</main>
+
+<!-- Score Overlay -->
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Impact Score Results">
+  <div class="score-card">
+    <div class="score-header">
+      <div class="score-eyebrow">Proposed Business Impact Score</div>
+      <div class="gauge-wrap">
+        <svg viewBox="0 0 140 140" aria-hidden="true">
+          <circle class="gauge-track" cx="70" cy="70" r="65" />
+          <circle class="gauge-fill" id="gaugeFill" cx="70" cy="70" r="65" />
+        </svg>
+        <div class="gauge-score">
+          <div class="gauge-number" id="gaugeNumber">0</div>
+          <div class="gauge-max">/ 100</div>
+        </div>
+      </div>
+      <div class="score-tier" id="scoreTier">—</div>
+      <div class="score-desc" id="scoreDesc"></div>
+    </div>
+
+    <div class="breakdown">
+      <div class="breakdown-label">Score Breakdown</div>
+      <div class="breakdown-item">
+        <span class="breakdown-name">Urgency</span>
+        <div class="bar-track"><div class="bar-fill" id="bar-urgency"></div></div>
+        <span class="breakdown-pts" id="pts-urgency">—</span>
+      </div>
+      <div class="breakdown-item">
+        <span class="breakdown-name">User Impact</span>
+        <div class="bar-track"><div class="bar-fill" id="bar-users"></div></div>
+        <span class="breakdown-pts" id="pts-users">—</span>
+      </div>
+      <div class="breakdown-item">
+        <span class="breakdown-name">Financial Impact</span>
+        <div class="bar-track"><div class="bar-fill" id="bar-revenue"></div></div>
+        <span class="breakdown-pts" id="pts-revenue">—</span>
+      </div>
+      <div class="breakdown-item">
+        <span class="breakdown-name">Compliance Risk</span>
+        <div class="bar-track"><div class="bar-fill" id="bar-compliance"></div></div>
+        <span class="breakdown-pts" id="pts-compliance">—</span>
+      </div>
+      <div class="breakdown-item">
+        <span class="breakdown-name">Time Savings</span>
+        <div class="bar-track"><div class="bar-fill" id="bar-time"></div></div>
+        <span class="breakdown-pts" id="pts-time">—</span>
+      </div>
+    </div>
+
+    <div class="score-footer">
+      <button class="btn-secondary" id="btnReset">Submit Another</button>
+      <button class="btn-primary-small" id="btnPrint">Print / Save PDF</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const TIERS = [
+  { min: 75, label: 'Critical Priority',  color: '#FF5B5B', desc: 'Strong urgency and broad impact — recommend immediate review and fast-track scheduling.' },
+  { min: 50, label: 'High Priority',      color: '#FF8C42', desc: 'A solid case for near-term investment. Target current or next planning cycle.' },
+  { min: 30, label: 'Medium Priority',    color: '#F5C518', desc: 'Valuable work that can be planned into the roadmap. Revisit at quarterly prioritization.' },
+  { min: 0,  label: 'Low Priority',       color: '#3ED9A0', desc: 'Log for future planning. Revisit when capacity or strategic fit improves.' },
+];
+
+const MAXPTS = { urgency: 30, users: 25, revenue: 20, compliance: 15, timesavings: 10 };
+const CIRCUMFERENCE = 2 * Math.PI * 65;
+
+function getTier(score) { return TIERS.find(t => score >= t.min); }
+
+function animateNumber(el, target, duration) {
+  const start = performance.now();
+  function step(now) {
+    const pct = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - pct, 3);
+    el.textContent = Math.round(ease * target);
+    if (pct < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function validate() {
+  let ok = true;
+  const fields = [
+    ['f-title', 'title'],
+    ['f-type', 'type'],
+    ['f-dept', 'dept'],
+    ['f-name', 'name'],
+    ['f-email', 'email'],
+    ['f-desc', 'desc'],
+    ['f-problem', 'problem'],
+    ['f-users', 'users'],
+    ['f-revenue', 'revenue'],
+    ['f-time', 'timesavings'],
+    ['f-compliance', 'compliance'],
+  ];
+  fields.forEach(function(pair) {
+    var fid = pair[0], iid = pair[1];
+    var field = document.getElementById(fid);
+    var input = document.getElementById(iid);
+    var val = input ? input.value.trim() : '';
+    if (!val) { field.classList.add('error'); ok = false; }
+    else field.classList.remove('error');
+  });
+  var emailEl = document.getElementById('email');
+  if (emailEl.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value)) {
+    document.getElementById('f-email').classList.add('error');
+    ok = false;
+  }
+  var urgency = document.querySelector('input[name="urgency"]:checked');
+  var urgencyField = document.getElementById('f-urgency');
+  if (!urgency) {
+    urgencyField.classList.add('error');
+    document.getElementById('urgency-error').style.display = 'block';
+    ok = false;
+  } else {
+    urgencyField.classList.remove('error');
+    document.getElementById('urgency-error').style.display = 'none';
+  }
+  return ok;
+}
+
+document.getElementById('intakeForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  if (!validate()) {
+    var first = document.querySelector('.field.error');
+    if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  var urgencyVal    = parseInt(document.querySelector('input[name="urgency"]:checked').value);
+  var usersVal      = parseInt(document.getElementById('users').value);
+  var revenueVal    = parseInt(document.getElementById('revenue').value);
+  var complianceVal = parseInt(document.getElementById('compliance').value);
+  var timeVal       = parseInt(document.getElementById('timesavings').value);
+  var total = urgencyVal + usersVal + revenueVal + complianceVal + timeVal;
+  var tier = getTier(total);
+
+  var fill = document.getElementById('gaugeFill');
+  fill.style.stroke = tier.color;
+  var offset = CIRCUMFERENCE - (total / 100) * CIRCUMFERENCE;
+  setTimeout(function() { fill.style.strokeDashoffset = offset; }, 80);
+
+  animateNumber(document.getElementById('gaugeNumber'), total, 1300);
+
+  var scoreTierEl = document.getElementById('scoreTier');
+  scoreTierEl.textContent = tier.label;
+  scoreTierEl.style.color = tier.color;
+  document.getElementById('scoreDesc').textContent = tier.desc;
+
+  var bars = [
+    ['urgency',     urgencyVal,    MAXPTS.urgency,     'urgency'],
+    ['users',       usersVal,      MAXPTS.users,        'users'],
+    ['revenue',     revenueVal,    MAXPTS.revenue,      'revenue'],
+    ['compliance',  complianceVal, MAXPTS.compliance,   'compliance'],
+    ['timesavings', timeVal,       MAXPTS.timesavings,  'time'],
+  ];
+  bars.forEach(function(row, i) {
+    var val = row[1], max = row[2], key = row[3];
+    setTimeout(function() {
+      document.getElementById('bar-' + key).style.width = ((val / max) * 100) + '%';
+      document.getElementById('bar-' + key).style.background = tier.color;
+      document.getElementById('pts-' + key).textContent = val + 'pt' + (val !== 1 ? 's' : '');
+    }, 100 + i * 80);
+  });
+
+  document.getElementById('overlay').classList.add('visible');
+});
+
+document.getElementById('btnReset').addEventListener('click', function() {
+  document.getElementById('overlay').classList.remove('visible');
+  document.getElementById('intakeForm').reset();
+  document.getElementById('gaugeFill').style.strokeDashoffset = CIRCUMFERENCE;
+  document.getElementById('gaugeNumber').textContent = '0';
+  ['urgency','users','revenue','compliance','time'].forEach(function(k) {
+    document.getElementById('bar-' + k).style.width = '0%';
+    document.getElementById('pts-' + k).textContent = '—';
+  });
+});
+
+document.getElementById('btnPrint').addEventListener('click', function() { window.print(); });
+
+document.getElementById('overlay').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('visible');
+});
+</script>
+</body>
+</html>
