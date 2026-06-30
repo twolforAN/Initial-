@@ -30,6 +30,7 @@ body {
   min-height: 100vh;
 }
 
+/* ── Header ── */
 .header {
   border-bottom: 1px solid var(--border);
   padding: 20px 40px;
@@ -45,24 +46,49 @@ body {
   letter-spacing: 0.12em;
   padding: 6px 10px;
   border-radius: 4px;
+  flex-shrink: 0;
 }
 .header-title {
   font-size: 14px;
   color: var(--text-muted);
   letter-spacing: 0.04em;
 }
-.header-divider {
-  width: 1px;
-  height: 20px;
-  background: var(--border);
+.header-divider { width: 1px; height: 20px; background: var(--border); }
+.header-spacer { flex: 1; }
+.header-monday-status {
+  font-size: 12px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
+.monday-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--border);
+  flex-shrink: 0;
+}
+.monday-dot.connected { background: #3ED9A0; }
+.btn-gear {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 15px;
+  padding: 5px 9px;
+  line-height: 1;
+  transition: border-color 0.15s, color 0.15s;
+}
+.btn-gear:hover { border-color: var(--accent); color: var(--text); }
 
+/* ── Main ── */
 .main {
   max-width: 760px;
   margin: 0 auto;
   padding: 48px 24px 80px;
 }
-
 .page-title {
   font-size: 28px;
   font-weight: 600;
@@ -70,14 +96,10 @@ body {
   margin-bottom: 6px;
   text-wrap: balance;
 }
-.page-subtitle {
-  color: var(--text-muted);
-  font-size: 14px;
-  margin-bottom: 40px;
-}
+.page-subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 40px; }
 
+/* ── Sections ── */
 .section { margin-bottom: 40px; }
-
 .section-label {
   font-size: 10px;
   font-weight: 700;
@@ -89,27 +111,12 @@ body {
   align-items: center;
   gap: 10px;
 }
-.section-label::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
+/* ── Fields ── */
 .field { margin-bottom: 20px; }
-
-.field-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 20px;
-}
-.field-row-3 {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 20px;
-}
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+.field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
 
 label {
   display: block;
@@ -124,6 +131,7 @@ label .required { color: var(--accent); margin-left: 3px; }
 
 input[type="text"],
 input[type="email"],
+input[type="password"],
 textarea,
 select {
   width: 100%;
@@ -139,18 +147,11 @@ select {
   -webkit-appearance: none;
   appearance: none;
 }
-input[type="text"]:focus,
-input[type="email"]:focus,
-textarea:focus,
-select:focus {
+input:focus, textarea:focus, select:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(91, 127, 255, 0.15);
 }
-textarea {
-  resize: vertical;
-  min-height: 96px;
-  line-height: 1.6;
-}
+textarea { resize: vertical; min-height: 96px; line-height: 1.6; }
 select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7491' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -160,11 +161,8 @@ select {
 }
 select option { background: #1A1F30; }
 
-.radio-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-}
+/* ── Radio cards ── */
+.radio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
 .radio-card { position: relative; cursor: pointer; }
 .radio-card input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
 .radio-card-inner {
@@ -185,12 +183,8 @@ select option { background: #1A1F30; }
 .radio-card-title { font-size: 13px; font-weight: 600; color: var(--text); }
 .radio-card-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
 
-.submit-area {
-  padding-top: 8px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
+/* ── Submit ── */
+.submit-area { padding-top: 8px; display: flex; align-items: center; gap: 16px; }
 .btn-submit {
   background: var(--accent);
   color: #fff;
@@ -208,7 +202,15 @@ select option { background: #1A1F30; }
 .btn-submit:active { transform: scale(0.98); }
 .submit-note { font-size: 12px; color: var(--text-muted); }
 
-/* Score Modal */
+/* ── Validation ── */
+.field.error input,
+.field.error textarea,
+.field.error select { border-color: var(--critical); }
+.field.error .radio-grid { outline: 1px solid var(--critical); border-radius: var(--radius); }
+.error-msg { font-size: 11px; color: var(--critical); margin-top: 5px; display: none; }
+.field.error .error-msg { display: block; }
+
+/* ── Score Overlay ── */
 .overlay {
   position: fixed;
   inset: 0;
@@ -224,7 +226,6 @@ select option { background: #1A1F30; }
   padding: 24px;
 }
 .overlay.visible { opacity: 1; pointer-events: all; }
-
 .score-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -248,18 +249,13 @@ select option { background: #1A1F30; }
   color: var(--text-muted);
   margin-bottom: 24px;
 }
-
 .gauge-wrap {
   width: 160px;
   height: 160px;
   margin: 0 auto 20px;
   position: relative;
 }
-.gauge-wrap svg {
-  width: 100%;
-  height: 100%;
-  transform: rotate(-90deg);
-}
+.gauge-wrap svg { width: 100%; height: 100%; transform: rotate(-90deg); }
 .gauge-track { fill: none; stroke: var(--surface-2); stroke-width: 10; }
 .gauge-fill {
   fill: none;
@@ -285,7 +281,6 @@ select option { background: #1A1F30; }
   font-variant-numeric: tabular-nums;
 }
 .gauge-max { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-
 .score-tier { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
 .score-desc {
   font-size: 13px;
@@ -295,12 +290,7 @@ select option { background: #1A1F30; }
   line-height: 1.5;
 }
 
-.breakdown {
-  margin-top: 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
+.breakdown { margin-top: 28px; display: flex; flex-direction: column; gap: 12px; }
 .breakdown-label {
   font-size: 10px;
   font-weight: 700;
@@ -311,7 +301,7 @@ select option { background: #1A1F30; }
 }
 .breakdown-item {
   display: grid;
-  grid-template-columns: 140px 1fr 40px;
+  grid-template-columns: 160px 1fr 40px;
   align-items: center;
   gap: 12px;
 }
@@ -331,11 +321,24 @@ select option { background: #1A1F30; }
   color: var(--text-muted);
 }
 
-.score-footer {
-  margin-top: 32px;
+/* Monday sync status in score modal */
+.monday-sync {
+  margin-top: 20px;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  font-size: 13px;
   display: flex;
+  align-items: center;
   gap: 10px;
 }
+.monday-sync.success { border-color: #3ED9A0; color: #3ED9A0; }
+.monday-sync.error { border-color: #FF8C42; color: #FF8C42; }
+.monday-sync.pending { color: var(--text-muted); }
+.monday-sync a { color: inherit; text-decoration: underline; }
+
+.score-footer { margin-top: 20px; display: flex; gap: 10px; }
 .btn-secondary {
   flex: 1;
   background: var(--surface-2);
@@ -365,40 +368,107 @@ select option { background: #1A1F30; }
 }
 .btn-primary-small:hover { opacity: 0.88; }
 
-/* Validation */
-.field.error input,
-.field.error textarea,
-.field.error select { border-color: var(--critical); }
-.field.error .radio-grid { outline: 1px solid var(--critical); border-radius: var(--radius); }
-.error-msg {
-  font-size: 11px;
-  color: var(--critical);
-  margin-top: 5px;
-  display: none;
+/* ── Settings Modal ── */
+.settings-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 10, 18, 0.80);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  padding: 24px;
 }
-.field.error .error-msg { display: block; }
+.settings-overlay.visible { opacity: 1; pointer-events: all; }
+.settings-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 460px;
+  padding: 32px;
+  transform: scale(0.97);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.settings-overlay.visible .settings-card { transform: scale(1); }
+.settings-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.settings-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+.settings-footer { display: flex; gap: 10px; margin-top: 24px; }
+.btn-save {
+  flex: 1;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.btn-save:hover { opacity: 0.88; }
+.btn-cancel {
+  background: var(--surface-2);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: var(--font);
+  font-size: 14px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+.settings-feedback {
+  font-size: 12px;
+  margin-top: 12px;
+  min-height: 18px;
+}
+.settings-feedback.ok { color: #3ED9A0; }
+.settings-feedback.err { color: var(--critical); }
 
 @media (max-width: 600px) {
   .main { padding: 32px 16px 60px; }
-  .header { padding: 16px 20px; }
+  .header { padding: 16px 20px; gap: 10px; }
+  .header-title { display: none; }
   .field-row, .field-row-3 { grid-template-columns: 1fr; }
   .radio-grid { grid-template-columns: 1fr; }
-  .breakdown-item { grid-template-columns: 110px 1fr 36px; }
+  .breakdown-item { grid-template-columns: 120px 1fr 36px; }
   .score-card { padding: 28px 20px; }
   .submit-area { flex-direction: column; align-items: flex-start; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .gauge-fill, .bar-fill, .overlay, .score-card { transition: none; }
+  .gauge-fill, .bar-fill, .overlay, .score-card,
+  .settings-overlay, .settings-card { transition: none; }
 }
 </style>
 </head>
 <body>
 
+<!-- Header -->
 <div class="header">
   <span class="header-mark">BSI</span>
   <div class="header-divider"></div>
   <span class="header-title">Business Systems Intake</span>
+  <div class="header-spacer"></div>
+  <div class="header-monday-status" id="mondayStatus">
+    <div class="monday-dot" id="mondayDot"></div>
+    <span id="mondayStatusText">Monday.com not connected</span>
+  </div>
+  <button class="btn-gear" id="btnGear" title="Configure Monday.com">⚙</button>
 </div>
 
 <main class="main">
@@ -407,6 +477,7 @@ select option { background: #1A1F30; }
 
   <form id="intakeForm" novalidate>
 
+    <!-- Request Details -->
     <div class="section">
       <div class="section-label">Request Details</div>
 
@@ -421,13 +492,33 @@ select option { background: #1A1F30; }
           <label>Request Type <span class="required">*</span></label>
           <select id="type">
             <option value="">Select type…</option>
-            <option>New System</option>
-            <option>Enhancement to Existing System</option>
+            <option>Access Request</option>
+            <option>Audit</option>
+            <option>Automation Edit</option>
+            <option>Automation New</option>
+            <option>Campaign</option>
+            <option>Case Request</option>
+            <option>Dashboard</option>
+            <option>Data Cleanup</option>
+            <option>Field</option>
+            <option>Form</option>
             <option>Integration</option>
-            <option>Automation</option>
-            <option>Process Change</option>
-            <option>Reporting / Analytics</option>
-            <option>Other</option>
+            <option>LWC</option>
+            <option>Mogli</option>
+            <option>New Technology</option>
+            <option>Object</option>
+            <option>Onboarding/Offboarding</option>
+            <option>OnceHub</option>
+            <option>Opero</option>
+            <option>Page Layout</option>
+            <option>Policy/Price Update</option>
+            <option>Project</option>
+            <option>Reporting</option>
+            <option>Speech Eval Edit</option>
+            <option>Survey</option>
+            <option>System Issue</option>
+            <option>TalkDesk</option>
+            <option>Zapier</option>
           </select>
           <div class="error-msg">Please select a request type.</div>
         </div>
@@ -435,16 +526,28 @@ select option { background: #1A1F30; }
           <label>Department <span class="required">*</span></label>
           <select id="dept">
             <option value="">Select department…</option>
-            <option>Sales</option>
-            <option>Marketing</option>
-            <option>Finance</option>
-            <option>Operations</option>
-            <option>Customer Success</option>
-            <option>IT / Engineering</option>
-            <option>HR / People Ops</option>
-            <option>Legal / Compliance</option>
+            <option>AbleCare</option>
+            <option>ableFamilies</option>
+            <option>Benefits Team</option>
+            <option>Business Development</option>
+            <option>Claims</option>
+            <option>Clinic</option>
+            <option>Compliance</option>
+            <option>Customer Experience</option>
+            <option>CX Empowerment</option>
+            <option>Data Team</option>
             <option>Executive</option>
-            <option>Other</option>
+            <option>Finance</option>
+            <option>Funding Success</option>
+            <option>Healthcare Contracts</option>
+            <option>HR</option>
+            <option>Marketing</option>
+            <option>Next Step</option>
+            <option>Operations</option>
+            <option>PAR Team</option>
+            <option>Payer Ops</option>
+            <option>Product Management</option>
+            <option>Systems</option>
           </select>
           <div class="error-msg">Please select your department.</div>
         </div>
@@ -458,7 +561,7 @@ select option { background: #1A1F30; }
         </div>
         <div class="field" id="f-email">
           <label>Email <span class="required">*</span></label>
-          <input type="email" id="email" placeholder="you@company.com" />
+          <input type="email" id="email" placeholder="you@ablenetinc.com" />
           <div class="error-msg">Valid email required.</div>
         </div>
         <div class="field">
@@ -474,6 +577,7 @@ select option { background: #1A1F30; }
       </div>
     </div>
 
+    <!-- Business Case -->
     <div class="section">
       <div class="section-label">Business Case</div>
 
@@ -530,43 +634,30 @@ select option { background: #1A1F30; }
           </select>
           <div class="error-msg">Required.</div>
         </div>
-        <div class="field" id="f-revenue">
-          <label>Revenue / Cost Impact <span class="required">*</span></label>
-          <select id="revenue">
+        <div class="field" id="f-records">
+          <label>Records / Throughput Impacted <span class="required">*</span></label>
+          <select id="records">
             <option value="">Select…</option>
-            <option value="20">Direct revenue or &gt;$100K savings</option>
-            <option value="12">Moderate savings ($10K–$100K)</option>
-            <option value="5">Minor savings (&lt;$10K)</option>
-            <option value="0">No direct financial impact</option>
+            <option value="25">500+</option>
+            <option value="15">101–500</option>
+            <option value="7">Under 100</option>
           </select>
           <div class="error-msg">Required.</div>
         </div>
       </div>
 
-      <div class="field-row">
-        <div class="field" id="f-time">
-          <label>Weekly Time Savings (team total) <span class="required">*</span></label>
-          <select id="timesavings">
-            <option value="">Select…</option>
-            <option value="10">&gt;10 hours / week</option>
-            <option value="7">5–10 hours / week</option>
-            <option value="4">1–5 hours / week</option>
-            <option value="1">Under 1 hour / week</option>
-          </select>
-          <div class="error-msg">Required.</div>
-        </div>
-        <div class="field" id="f-compliance">
-          <label>Compliance / Regulatory Requirement <span class="required">*</span></label>
-          <select id="compliance">
-            <option value="">Select…</option>
-            <option value="15">Yes — required for compliance</option>
-            <option value="0">No</option>
-          </select>
-          <div class="error-msg">Required.</div>
-        </div>
+      <div class="field" id="f-compliance">
+        <label>Compliance / Regulatory Requirement <span class="required">*</span></label>
+        <select id="compliance">
+          <option value="">Select…</option>
+          <option value="20">Yes — required for compliance</option>
+          <option value="0">No</option>
+        </select>
+        <div class="error-msg">Required.</div>
       </div>
     </div>
 
+    <!-- Additional Context -->
     <div class="section">
       <div class="section-label">Additional Context</div>
 
@@ -588,7 +679,7 @@ select option { background: #1A1F30; }
   </form>
 </main>
 
-<!-- Score Overlay -->
+<!-- Score Results Overlay -->
 <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Impact Score Results">
   <div class="score-card">
     <div class="score-header">
@@ -620,21 +711,18 @@ select option { background: #1A1F30; }
         <span class="breakdown-pts" id="pts-users">—</span>
       </div>
       <div class="breakdown-item">
-        <span class="breakdown-name">Financial Impact</span>
-        <div class="bar-track"><div class="bar-fill" id="bar-revenue"></div></div>
-        <span class="breakdown-pts" id="pts-revenue">—</span>
+        <span class="breakdown-name">Records / Throughput</span>
+        <div class="bar-track"><div class="bar-fill" id="bar-records"></div></div>
+        <span class="breakdown-pts" id="pts-records">—</span>
       </div>
       <div class="breakdown-item">
         <span class="breakdown-name">Compliance Risk</span>
         <div class="bar-track"><div class="bar-fill" id="bar-compliance"></div></div>
         <span class="breakdown-pts" id="pts-compliance">—</span>
       </div>
-      <div class="breakdown-item">
-        <span class="breakdown-name">Time Savings</span>
-        <div class="bar-track"><div class="bar-fill" id="bar-time"></div></div>
-        <span class="breakdown-pts" id="pts-time">—</span>
-      </div>
     </div>
+
+    <div class="monday-sync pending" id="mondaySync" style="display:none;"></div>
 
     <div class="score-footer">
       <button class="btn-secondary" id="btnReset">Submit Another</button>
@@ -643,33 +731,59 @@ select option { background: #1A1F30; }
   </div>
 </div>
 
+<!-- Settings Overlay -->
+<div class="settings-overlay" id="settingsOverlay" role="dialog" aria-modal="true" aria-label="Monday.com Settings">
+  <div class="settings-card">
+    <div class="settings-title">Connect Monday.com</div>
+    <div class="settings-desc">Your API token is saved in this browser only — it is never sent to or stored in the code. Generate a token at <strong>monday.com → Avatar → Developers → My Access Tokens</strong>.</div>
+
+    <div class="field" style="margin-bottom:16px;">
+      <label>API Token</label>
+      <input type="password" id="settingsToken" placeholder="eyJhbGciOi…" autocomplete="off" />
+    </div>
+    <div class="field" style="margin-bottom:0;">
+      <label>Board ID</label>
+      <input type="text" id="settingsBoardId" value="18392223483" />
+    </div>
+
+    <div class="settings-feedback" id="settingsFeedback"></div>
+
+    <div class="settings-footer">
+      <button class="btn-cancel" id="btnSettingsCancel">Cancel</button>
+      <button class="btn-save" id="btnSettingsSave">Save &amp; Connect</button>
+    </div>
+  </div>
+</div>
+
 <script>
-const TIERS = [
+// ── Scoring ──────────────────────────────────────────────────────────────────
+var TIERS = [
   { min: 75, label: 'Critical Priority',  color: '#FF5B5B', desc: 'Strong urgency and broad impact — recommend immediate review and fast-track scheduling.' },
   { min: 50, label: 'High Priority',      color: '#FF8C42', desc: 'A solid case for near-term investment. Target current or next planning cycle.' },
   { min: 30, label: 'Medium Priority',    color: '#F5C518', desc: 'Valuable work that can be planned into the roadmap. Revisit at quarterly prioritization.' },
-  { min: 0,  label: 'Low Priority',       color: '#3ED9A0', desc: 'Log for future planning. Revisit when capacity or strategic fit improves.' },
+  { min: 0,  label: 'Low Priority',       color: '#3ED9A0', desc: 'Log for future planning. Revisit when capacity or strategic fit improves.' }
 ];
 
-const MAXPTS = { urgency: 30, users: 25, revenue: 20, compliance: 15, timesavings: 10 };
-const CIRCUMFERENCE = 2 * Math.PI * 65;
+var MAXPTS = { urgency: 30, users: 25, records: 25, compliance: 20 };
+var CIRCUMFERENCE = 2 * Math.PI * 65;
 
-function getTier(score) { return TIERS.find(t => score >= t.min); }
+function getTier(score) { return TIERS.find(function(t) { return score >= t.min; }); }
 
 function animateNumber(el, target, duration) {
-  const start = performance.now();
+  var start = performance.now();
   function step(now) {
-    const pct = Math.min((now - start) / duration, 1);
-    const ease = 1 - Math.pow(1 - pct, 3);
+    var pct = Math.min((now - start) / duration, 1);
+    var ease = 1 - Math.pow(1 - pct, 3);
     el.textContent = Math.round(ease * target);
     if (pct < 1) requestAnimationFrame(step);
   }
   requestAnimationFrame(step);
 }
 
+// ── Validation ────────────────────────────────────────────────────────────────
 function validate() {
-  let ok = true;
-  const fields = [
+  var ok = true;
+  var fields = [
     ['f-title', 'title'],
     ['f-type', 'type'],
     ['f-dept', 'dept'],
@@ -678,14 +792,12 @@ function validate() {
     ['f-desc', 'desc'],
     ['f-problem', 'problem'],
     ['f-users', 'users'],
-    ['f-revenue', 'revenue'],
-    ['f-time', 'timesavings'],
-    ['f-compliance', 'compliance'],
+    ['f-records', 'records'],
+    ['f-compliance', 'compliance']
   ];
   fields.forEach(function(pair) {
-    var fid = pair[0], iid = pair[1];
-    var field = document.getElementById(fid);
-    var input = document.getElementById(iid);
+    var field = document.getElementById(pair[0]);
+    var input = document.getElementById(pair[1]);
     var val = input ? input.value.trim() : '';
     if (!val) { field.classList.add('error'); ok = false; }
     else field.classList.remove('error');
@@ -708,6 +820,7 @@ function validate() {
   return ok;
 }
 
+// ── Form submit ───────────────────────────────────────────────────────────────
 document.getElementById('intakeForm').addEventListener('submit', function(e) {
   e.preventDefault();
   if (!validate()) {
@@ -718,33 +831,33 @@ document.getElementById('intakeForm').addEventListener('submit', function(e) {
 
   var urgencyVal    = parseInt(document.querySelector('input[name="urgency"]:checked').value);
   var usersVal      = parseInt(document.getElementById('users').value);
-  var revenueVal    = parseInt(document.getElementById('revenue').value);
+  var recordsVal    = parseInt(document.getElementById('records').value);
   var complianceVal = parseInt(document.getElementById('compliance').value);
-  var timeVal       = parseInt(document.getElementById('timesavings').value);
-  var total = urgencyVal + usersVal + revenueVal + complianceVal + timeVal;
+  var total = urgencyVal + usersVal + recordsVal + complianceVal;
   var tier = getTier(total);
 
+  // Gauge
   var fill = document.getElementById('gaugeFill');
   fill.style.stroke = tier.color;
   var offset = CIRCUMFERENCE - (total / 100) * CIRCUMFERENCE;
   setTimeout(function() { fill.style.strokeDashoffset = offset; }, 80);
-
   animateNumber(document.getElementById('gaugeNumber'), total, 1300);
 
+  // Tier label
   var scoreTierEl = document.getElementById('scoreTier');
   scoreTierEl.textContent = tier.label;
   scoreTierEl.style.color = tier.color;
   document.getElementById('scoreDesc').textContent = tier.desc;
 
+  // Breakdown bars
   var bars = [
-    ['urgency',     urgencyVal,    MAXPTS.urgency,     'urgency'],
-    ['users',       usersVal,      MAXPTS.users,        'users'],
-    ['revenue',     revenueVal,    MAXPTS.revenue,      'revenue'],
-    ['compliance',  complianceVal, MAXPTS.compliance,   'compliance'],
-    ['timesavings', timeVal,       MAXPTS.timesavings,  'time'],
+    ['urgency',    urgencyVal,    MAXPTS.urgency],
+    ['users',      usersVal,      MAXPTS.users],
+    ['records',    recordsVal,    MAXPTS.records],
+    ['compliance', complianceVal, MAXPTS.compliance]
   ];
   bars.forEach(function(row, i) {
-    var val = row[1], max = row[2], key = row[3];
+    var key = row[0], val = row[1], max = row[2];
     setTimeout(function() {
       document.getElementById('bar-' + key).style.width = ((val / max) * 100) + '%';
       document.getElementById('bar-' + key).style.background = tier.color;
@@ -753,17 +866,192 @@ document.getElementById('intakeForm').addEventListener('submit', function(e) {
   });
 
   document.getElementById('overlay').classList.add('visible');
+
+  // Monday sync
+  var token = localStorage.getItem('monday_api_token');
+  var boardId = localStorage.getItem('monday_board_id') || '18392223483';
+  var syncEl = document.getElementById('mondaySync');
+  if (token) {
+    syncEl.style.display = 'flex';
+    syncEl.className = 'monday-sync pending';
+    syncEl.textContent = 'Syncing to Monday.com…';
+    createMondayItem(token, boardId, total, tier.label).then(function(result) {
+      if (result.itemId) {
+        syncEl.className = 'monday-sync success';
+        var link = 'https://ablenetinc-company.monday.com/boards/' + boardId;
+        syncEl.innerHTML = '✓ Created in Monday.com — <a href="' + link + '" target="_blank" rel="noopener">View item</a>';
+      } else {
+        syncEl.className = 'monday-sync error';
+        syncEl.textContent = '⚠ Monday sync failed: ' + (result.error || 'Unknown error');
+      }
+    });
+  } else {
+    syncEl.style.display = 'flex';
+    syncEl.className = 'monday-sync pending';
+    syncEl.innerHTML = 'Monday.com not connected. <button onclick="document.getElementById(\'overlay\').classList.remove(\'visible\'); openSettings();" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:13px;padding:0;margin-left:4px;">Configure →</button>';
+  }
 });
 
+// ── Monday API ────────────────────────────────────────────────────────────────
+var MONDAY_API = 'https://api.monday.com/v2';
+
+function mondayRequest(token, query) {
+  return fetch(MONDAY_API, {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json',
+      'API-Version': '2024-01'
+    },
+    body: JSON.stringify({ query: query })
+  }).then(function(r) { return r.json(); });
+}
+
+function fetchBoardColumns(token, boardId) {
+  var q = 'query { boards(ids: [' + boardId + ']) { columns { id title type } } }';
+  return mondayRequest(token, q).then(function(data) {
+    if (data.errors) throw new Error(data.errors[0].message);
+    return data.data.boards[0].columns;
+  });
+}
+
+function buildColumnValues(columns, score, tierLabel) {
+  var vals = {};
+  var title = document.getElementById('title').value.trim();
+  var type  = document.getElementById('type').value;
+  var dept  = document.getElementById('dept').value;
+  var name  = document.getElementById('name').value.trim();
+  var email = document.getElementById('email').value.trim();
+  var desc  = document.getElementById('desc').value.trim();
+  var problem = document.getElementById('problem').value.trim();
+  var urgencyEl = document.querySelector('input[name="urgency"]:checked');
+  var urgencyText = urgencyEl ? urgencyEl.closest('.radio-card').querySelector('.radio-card-title').textContent : '';
+
+  columns.forEach(function(col) {
+    var t = col.title.toLowerCase();
+    if (col.type === 'name') return;
+    if ((t.includes('request type') || t === 'type') && type) {
+      vals[col.id] = col.type === 'dropdown' ? { labels: [type] } : type;
+    } else if ((t.includes('department') || t.includes('dept')) && dept) {
+      vals[col.id] = col.type === 'dropdown' ? { labels: [dept] } : dept;
+    } else if ((t.includes('submitter') || (t.includes('name') && !t.includes('item'))) && name) {
+      vals[col.id] = name;
+    } else if (t.includes('email') && email) {
+      vals[col.id] = col.type === 'email' ? { email: email, text: email } : email;
+    } else if ((t.includes('priority') || t.includes('urgency') || t.includes('status')) && urgencyText) {
+      vals[col.id] = col.type === 'status' ? { label: urgencyText } : urgencyText;
+    } else if ((t.includes('description') || t.includes('notes') || t.includes('detail')) && desc) {
+      vals[col.id] = desc;
+    } else if ((t.includes('problem') || t.includes('issue')) && problem) {
+      vals[col.id] = problem;
+    } else if ((t.includes('score') || t.includes('impact')) && col.type === 'numeric') {
+      vals[col.id] = String(score);
+    } else if (t.includes('tier') && tierLabel) {
+      vals[col.id] = col.type === 'status' ? { label: tierLabel } : tierLabel;
+    }
+  });
+  return vals;
+}
+
+function createMondayItem(token, boardId, score, tierLabel) {
+  var itemName = document.getElementById('title').value.trim();
+  var colCache = localStorage.getItem('monday_columns_' + boardId);
+
+  function doCreate(columns) {
+    var colVals = buildColumnValues(columns, score, tierLabel);
+    var colValsStr = JSON.stringify(JSON.stringify(colVals));
+    var mutation = 'mutation { create_item(board_id: ' + boardId + ', item_name: ' + JSON.stringify(itemName) + ', column_values: ' + colValsStr + ') { id } }';
+    return mondayRequest(token, mutation).then(function(data) {
+      if (data.errors) return { error: data.errors[0].message };
+      return { itemId: data.data.create_item.id };
+    });
+  }
+
+  if (colCache) {
+    try {
+      return doCreate(JSON.parse(colCache));
+    } catch(e) {}
+  }
+  return fetchBoardColumns(token, boardId).then(function(cols) {
+    localStorage.setItem('monday_columns_' + boardId, JSON.stringify(cols));
+    return doCreate(cols);
+  }).catch(function(err) {
+    return { error: err.message };
+  });
+}
+
+// ── Settings ──────────────────────────────────────────────────────────────────
+function openSettings() {
+  var token = localStorage.getItem('monday_api_token');
+  var boardId = localStorage.getItem('monday_board_id') || '18392223483';
+  if (token) document.getElementById('settingsToken').value = token;
+  document.getElementById('settingsBoardId').value = boardId;
+  document.getElementById('settingsFeedback').textContent = '';
+  document.getElementById('settingsFeedback').className = 'settings-feedback';
+  document.getElementById('settingsOverlay').classList.add('visible');
+}
+
+function updateHeaderStatus() {
+  var token = localStorage.getItem('monday_api_token');
+  var dot = document.getElementById('mondayDot');
+  var txt = document.getElementById('mondayStatusText');
+  if (token) {
+    dot.classList.add('connected');
+    txt.textContent = 'Monday.com connected';
+  } else {
+    dot.classList.remove('connected');
+    txt.textContent = 'Monday.com not connected';
+  }
+}
+
+document.getElementById('btnGear').addEventListener('click', openSettings);
+
+document.getElementById('btnSettingsCancel').addEventListener('click', function() {
+  document.getElementById('settingsOverlay').classList.remove('visible');
+});
+
+document.getElementById('settingsOverlay').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('visible');
+});
+
+document.getElementById('btnSettingsSave').addEventListener('click', function() {
+  var token = document.getElementById('settingsToken').value.trim();
+  var boardId = document.getElementById('settingsBoardId').value.trim();
+  var fb = document.getElementById('settingsFeedback');
+
+  if (!token) { fb.className = 'settings-feedback err'; fb.textContent = 'Please enter an API token.'; return; }
+  if (!boardId) { fb.className = 'settings-feedback err'; fb.textContent = 'Please enter a Board ID.'; return; }
+
+  fb.className = 'settings-feedback'; fb.textContent = 'Verifying…';
+  document.getElementById('btnSettingsSave').disabled = true;
+
+  fetchBoardColumns(token, boardId).then(function(cols) {
+    localStorage.setItem('monday_api_token', token);
+    localStorage.setItem('monday_board_id', boardId);
+    localStorage.setItem('monday_columns_' + boardId, JSON.stringify(cols));
+    fb.className = 'settings-feedback ok';
+    fb.textContent = '✓ Connected — ' + cols.length + ' columns detected on this board.';
+    document.getElementById('btnSettingsSave').disabled = false;
+    updateHeaderStatus();
+    setTimeout(function() { document.getElementById('settingsOverlay').classList.remove('visible'); }, 1200);
+  }).catch(function(err) {
+    fb.className = 'settings-feedback err';
+    fb.textContent = '⚠ Could not connect: ' + err.message;
+    document.getElementById('btnSettingsSave').disabled = false;
+  });
+});
+
+// ── Reset / Print ─────────────────────────────────────────────────────────────
 document.getElementById('btnReset').addEventListener('click', function() {
   document.getElementById('overlay').classList.remove('visible');
   document.getElementById('intakeForm').reset();
   document.getElementById('gaugeFill').style.strokeDashoffset = CIRCUMFERENCE;
   document.getElementById('gaugeNumber').textContent = '0';
-  ['urgency','users','revenue','compliance','time'].forEach(function(k) {
+  ['urgency','users','records','compliance'].forEach(function(k) {
     document.getElementById('bar-' + k).style.width = '0%';
     document.getElementById('pts-' + k).textContent = '—';
   });
+  document.getElementById('mondaySync').style.display = 'none';
 });
 
 document.getElementById('btnPrint').addEventListener('click', function() { window.print(); });
@@ -771,6 +1059,9 @@ document.getElementById('btnPrint').addEventListener('click', function() { windo
 document.getElementById('overlay').addEventListener('click', function(e) {
   if (e.target === this) this.classList.remove('visible');
 });
+
+// Init
+updateHeaderStatus();
 </script>
 </body>
 </html>
